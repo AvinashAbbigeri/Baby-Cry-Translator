@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div id="hero">
+        <div id="head1"><p>🍼 Understand Your Baby's Cries with AI!</p></div>
+        <div id="head2"><p>Our advanced AI model listens to your baby's cries and classifies them into categories,<br/> helping parents and caregivers respond better and faster.</p></div>
+    </div>
+
+    <div id="section1">
+        <div class="head3"><p>🧠 About the Model</p></div>
+        <div class="cont1"><p>Our AI-powered Baby Cry Classifier is designed to analyze baby cries and categorize them into different types based on their needs. Using machine learning and deep learning techniques, our model can detect patterns in crying sounds and classify them.</p></div>
+        <div class="cont2">
+            <ul>
+                <li>🍼 Hungry : When the baby needs feeding.</li>
+                <li>😴 Sleepy : When the baby is tired and needs rest.</li>
+                <li>😢 Discomfort : When the baby is experiencing pain, gas, or other distress.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="section2">
+        <div class="head3"><p>👨‍👩‍👧 How It Helps Parents & Caretakers</p></div>
+        <div class="cont1"><p>Caring for a baby can be overwhelming, especially when understanding their needs through cries. Our AI-powered Baby Cry Classifier helps parents and caretakers by providing quick and accurate insights into<br/>what the baby needs.</p></div>
+        <div class="cont2">
+            <ul>
+                <li>Faster Response Time – Instantly recognize if your baby is hungry, sleepy, or uncomfortable.</li>
+                <li>upports Caretakers & Nannies – Assists caregivers in daycare centers or babysitters in providing better care.</li>
+                <li> Scientifically Trained AI – Uses deep learning models trained on real baby cry datasets for accuracy.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="section3">
+        <div class="head3"><p>🚀 AI-Powered Baby Cry Classifier</p></div>
+        <div class="cont1"><p>Upload an audio file</p></div>
+        <div id="upload-section">
+            <label for="imageFile" class="custom-file-upload">📂 Choose</label>
+            <input type="file" id="imageFile" accept="image/png, image/jpeg, image/jpg" onchange="updateFileDetails()">
+            <span id="fileNameDisplay">No file chosen</span>
+            <button class="btn" onclick="classifyImage()">Classify</button>
+        </div>
+        <div id="result"></div>
+        <img id="imageResult" src="" alt="Uploaded Image">
+    </div>
+    
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2025 AI Baby Cry Classifier | All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script>
+function updateFileDetails() {
+    const input = document.getElementById("imageFile");
+    const fileNameDisplay = document.getElementById("fileNameDisplay");
+    const imageResult = document.getElementById("imageResult");
+
+    if (input.files.length > 0) {
+        let file = input.files[0];
+
+        // Remove extension from filename
+        let fileName = file.name.replace(/\.[^/.]+$/, ""); 
+        fileNameDisplay.textContent = fileName;
+
+        // Display the uploaded image after a 3-second delay
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            setTimeout(() => {
+                imageResult.src = e.target.result;
+                imageResult.style.display = "block"; // Show the image
+            }, 3000); // 3-second delay
+        };
+        reader.readAsDataURL(file);
+    } else {
+        fileNameDisplay.textContent = "No file chosen";
+        imageResult.style.display = "none"; // Hide the image
+    }
+}
+
+    </script>
+    <script src="/static/script.js"></script>
+</body>
+</html>

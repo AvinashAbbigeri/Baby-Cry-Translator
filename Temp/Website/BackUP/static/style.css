@@ -54,6 +54,13 @@ h1, h2 {
     color: white;
 }
 
+.head4 p {
+    font-size: 3.5rem;
+    padding: 35vh 0 0 5vw;
+    color: white;
+    margin-bottom: 7vh;
+}
+
 .cont1 p, .cont2 p {
     font-size: 2rem;
     padding: 5vh 0 0 5vw;
@@ -110,18 +117,15 @@ h1, h2 {
 
 /* File Upload Section */
 #drop-area {
-    width: 70vw;
+    width: 45vw;
     height: 40vh;
-    margin-left: 15vw;
-    padding: 20px;
-    border: 2px dashed #007bff;
-    border-radius: 10px;
+    margin-left: 27.5vw;
+    border: 2px dashed pink;
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
-    background-color: #f8f9fa;
-    transition: background-color 0.3s ease-in-out;
+    overflow: hidden;
+    background-color: rgba(0, 255, 255, 0.246);
 }
 
 #drop-area p {
@@ -137,7 +141,7 @@ h1, h2 {
 }
 
 #drop-area:hover {
-    background-color: rgb(162, 162, 162);
+    background-color: rgba(0, 0, 139, 0.528);
 }
 
 /* Custom File Upload Button */
@@ -158,7 +162,7 @@ h1, h2 {
 
 /* File Name Display */
 #fileNameDisplay {
-    margin-left: 10px;
+    margin-left: 195px;
     font-size: 20px;
     color: white;
     padding-left: 15vw;
@@ -168,35 +172,33 @@ h1, h2 {
 /* Classification Result */
 #result {
     margin-top: 20px;
-    font-size: 1.2em;
+    font-size: 2em;
     font-weight: bold;
-    padding-left: 40vw;
+    padding-left: 45vw;
     color: white;
 }
 
 /* Image Result */
-#imageResult {
-    margin-top: 20px;
-    display: none;
-    height: 30vh;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    margin-left: 5vw;
-}
 
+#imageResult {
+    position: absolute;
+    width: 40vw;
+    height: 35vh;
+    object-fit: cover; /* Ensures image fills the drop area */
+    display: none;
+}
 /* Buttons */
 .btn {
-    margin-top: 10px;
+    float: right;
     padding: 10px 15px;
-    font-size: 16px;
+    font-size: 1rem;
     border: none;
     background-color: #007bff;
     color: white;
     cursor: pointer;
     border-radius: 5px;
-    float: right;
-    margin-right: 12vw;
-    margin-bottom: 10px;
+    margin-right: 425px;
+    margin-bottom: 15px;
 }
 
 .btn:hover {

@@ -36,17 +36,16 @@
     </div>
 
     <div id="section3">
-        <div class="head3"><p>🚀 AI-Powered Baby Cry Classifier</p></div>
-        <div class="cont1"><p>Upload an audio file</p></div>
+        <div class="head4"><p>🚀 AI-Powered Baby Cry Classifier</p></div>
         <div id="upload-section">
             <span id="fileNameDisplay">No file chosen</span>
-            <button class="btn" onclick="classifyAudio()">Classify</button>
-            <div id="result"></div>
+            <button id="btn" class="btn" onclick="classifyImage()">Classify</button>
             <div id="drop-area" ondrop="handleDrop(event)" ondragover="handleDragOver(event)">
                 <p>Drag & Drop your image here or <span onclick="triggerFileInput()">browse</span></p>
                 <input type="file" id="imageFile" accept="image/*" onchange="updateFileDetails()" hidden>
                 <img id="imageResult" src="" alt="Uploaded Image">
             </div>
+            <div id="result"></div>
         </div>
     </div>
     
@@ -57,53 +56,120 @@
     </footer>
 
     <script>
-function updateFileDetails() {
+        function triggerFileInput() {
+            document.getElementById("imageFile").click();
+        }
+        
+        function updateFileDetails(file = null) {
     const input = document.getElementById("imageFile");
     const fileNameDisplay = document.getElementById("fileNameDisplay");
     const imageResult = document.getElementById("imageResult");
 
-    if (input.files.length > 0) {
-        let file = input.files[0];
+    let selectedFile = file || (input.files.length > 0 ? input.files[0] : null);
 
-        // Remove extension from filename
-        let fileName = file.name.replace(/\.[^/.]+$/, ""); 
-        fileNameDisplay.textContent = fileName;
+    if (selectedFile) {
+        if (selectedFile.type.startsWith("image/")) {
+            let fileName = selectedFile.name.replace(/\.[^/.]+$/, "");
+            fileNameDisplay.textContent = fileName;
 
-        // Display the uploaded image after a 3-second delay
-        let reader = new FileReader();
-        reader.onload = function (e) {
-            setTimeout(() => {
-                imageResult.src = e.target.result;
-                imageResult.style.display = "block"; // Show the image
-            }, 3000); // 3-second delay
-        };
-        reader.readAsDataURL(file);
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                setTimeout(() => {  // Delay image display by 3 seconds
+                    imageResult.src = e.target.result;
+                    imageResult.style.display = "block";
+                }, 3000);
+            };
+            reader.readAsDataURL(selectedFile);
+        } else {
+            alert("Please upload a valid image file.");
+            fileNameDisplay.textContent = "No file chosen";
+            input.value = "";
+            imageResult.style.display = "none";
+        }
     } else {
         fileNameDisplay.textContent = "No file chosen";
-        imageResult.style.display = "none"; // Hide the image
+        imageResult.style.display = "none";
     }
 }
-    // Drag & Drop Handling
-    function handleDragOver(event) {
-        event.preventDefault();
-        event.dataTransfer.dropEffect = "copy";
-    }
-    
-    function handleDrop(event) {
-        event.preventDefault();
-        let files = event.dataTransfer.files;
-    
-        if (files.length > 0) {
-            let file = files[0];
-    
-            if (file.type.startsWith("image/")) {
-                updateFileDetails(file);
-            } else {
-                alert("Only image files are allowed.");
+
+        
+        // Drag & Drop Handling
+        function handleDragOver(event) {
+            event.preventDefault();
+            event.dataTransfer.dropEffect = "copy";
+        }
+        
+        function handleDrop(event) {
+            event.preventDefault();
+            let files = event.dataTransfer.files;
+        
+            if (files.length > 0) {
+                let file = files[0];
+        
+                if (file.type.startsWith("image/")) {
+                    updateFileDetails(file);
+                } else {
+                    alert("Only image files are allowed.");
+                }
             }
         }
-    }
-    </script>
-    <script src="/static/script.js"></script>
+        
+        // Image Classification Function
+        function classifyImage() {
+            let fileInput = document.getElementById("imageFile");
+            let file = fileInput.files[0];
+            let resultDiv = document.getElementById("result");
+            let uploadButton = document.getElementById("btn"); 
+        
+            if (!file) {
+                alert("Please upload an image file!");
+                return;
+            }
+        
+            if (!file.type.startsWith("image/")) {
+                alert("Only image files are allowed!");
+                return;
+            }
+        
+            if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                alert("File size exceeds 5MB! Please upload a smaller image.");
+                return;
+            }
+        
+            let formData = new FormData();
+            formData.append("file", file);
+        
+            // Show a loading message
+            resultDiv.innerHTML = `<p><img src="/static/loading.gif" alt="Loading..." width="30"> Processing...</p>`;
+        
+            // Disable button to prevent multiple clicks
+            uploadButton.disabled = true;
+        
+            // Delay execution of the fetch request by 2 seconds
+            setTimeout(() => {
+                fetch("/predict", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())  // Expect JSON directly
+                .then(data => {
+                    if (data.error) {
+                        resultDiv.innerHTML = `<p style="color: red;">Error: ${data.error}</p>`;
+                    } else {
+                        resultDiv.innerHTML = `<p><strong>Prediction:</strong> ${data.prediction}</p>`;
+                    }
+                })
+                .catch(error => {
+                    console.error("Fetch Error:", error);
+                    resultDiv.innerHTML = `<p style="color: red;">Something went wrong!</p>`;
+                })
+                .finally(() => {
+                    uploadButton.disabled = false; // Re-enable button after process completes
+                });
+            }, 2000); // 2-second delay
+        }
+        </script>
+        
+
 </body>
 </html>

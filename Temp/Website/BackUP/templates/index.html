@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div id="hero">
+        <div id="head1"><p>🍼 Understand Your Baby's Cries with AI!</p></div>
+        <div id="head2"><p>Wish your baby could talk? Their cries do! Upload an audio and uncover what they need</p></div>
+    </div>
+
+    <div id="section1">
+        <div class="head3"><p>🧠 About the Model</p></div>
+        <div class="cont1"><p>Our AI-powered Baby Cry Classifier is designed to analyze baby cries and categorize them into different types based on their needs. Using machine learning and deep learning techniques, our model can detect patterns in crying sounds and classify them.</p></div>
+        <div id="cont3">
+                <div class="items"><img src="/static/uploads/burping.png" alt="" srcset="">Burping</div>
+                <div class="items"><img src="/static/uploads/belly-pain.png" alt="" srcset="">Belly Pain</div>
+                <div class="items"><img src="/static/uploads/hungry.png" alt="" srcset="">Hungry</div>
+                <div class="items"><img src="/static/uploads/discomfort.png" alt="" srcset="">Discomfort</div>
+        </div>
+    </div>
+
+    <div id="section2">
+        <div class="head3"><p>👨‍👩‍👧 How It Helps Parents & Caretakers</p></div>
+        <div class="cont1"><p>Caring for a baby can be overwhelming, especially when understanding their needs through cries. Our AI-powered Baby Cry Classifier helps parents and caretakers by providing quick and accurate insights into<br/>what the baby needs.</p></div>
+        <div class="cont2">
+            <ul>
+                <li>Faster Response Time – Instantly recognize if your baby is hungry, sleepy, or uncomfortable.</li>
+                <li>upports Caretakers & Nannies – Assists caregivers in daycare centers or babysitters in providing better care.</li>
+                <li> Scientifically Trained AI – Uses deep learning models trained on real baby cry datasets for accuracy.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="section3">
+        <div class="head3"><p>🚀 AI-Powered Baby Cry Classifier</p></div>
+        <div class="cont1"><p>Upload an audio file</p></div>
+        <div id="upload-section">
+            <span id="fileNameDisplay">No file chosen</span>
+            <button class="btn" onclick="classifyAudio()">Classify</button>
+            <div id="result"></div>
+            <div id="drop-area" ondrop="handleDrop(event)" ondragover="handleDragOver(event)">
+                <p>Drag & Drop your image here or <span onclick="triggerFileInput()">browse</span></p>
+                <input type="file" id="imageFile" accept="image/*" onchange="updateFileDetails()" hidden>
+                <img id="imageResult" src="" alt="Uploaded Image">
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <div class="footer-container">
+            <p>&copy; 2025 AI Baby Cry Classifier | All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script>
+function updateFileDetails() {
+    const input = document.getElementById("imageFile");
+    const fileNameDisplay = document.getElementById("fileNameDisplay");
+    const imageResult = document.getElementById("imageResult");
+
+    if (input.files.length > 0) {
+        let file = input.files[0];
+
+        // Remove extension from filename
+        let fileName = file.name.replace(/\.[^/.]+$/, ""); 
+        fileNameDisplay.textContent = fileName;
+
+        // Display the uploaded image after a 3-second delay
+        let reader = new FileReader();
+        reader.onload = function (e) {
+            setTimeout(() => {
+                imageResult.src = e.target.result;
+                imageResult.style.display = "block"; // Show the image
+            }, 3000); // 3-second delay
+        };
+        reader.readAsDataURL(file);
+    } else {
+        fileNameDisplay.textContent = "No file chosen";
+        imageResult.style.display = "none"; // Hide the image
+    }
+}
+    // Drag & Drop Handling
+    function handleDragOver(event) {
+        event.preventDefault();
+        event.dataTransfer.dropEffect = "copy";
+    }
+    
+    function handleDrop(event) {
+        event.preventDefault();
+        let files = event.dataTransfer.files;
+    
+        if (files.length > 0) {
+            let file = files[0];
+    
+            if (file.type.startsWith("image/")) {
+                updateFileDetails(file);
+            } else {
+                alert("Only image files are allowed.");
+            }
+        }
+    }
+    </script>
+    <script src="/static/script.js"></script>
+</body>
+</html>
